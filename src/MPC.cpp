@@ -6,8 +6,8 @@
 using CppAD::AD;
 
 // TODO: Set the timestep length and duration
-size_t N = 10;
-double dt = 0.1;
+size_t N = 11;
+double dt = 0.125;
 // This value assumes the model presented in the classroom is used.
 //
 // It was obtained by measuring the radius formed by running the vehicle in the
@@ -25,7 +25,7 @@ const double ref_cte = 0;
 const double ref_epsi = 0;
 
 // reference value for speed
-const double ref_v = 75;
+const double ref_v = 85;
 
 // initialize the state variables
 size_t x_start = 0;
@@ -39,11 +39,11 @@ size_t a_start = delta_start + N - 1;
 
 // Weights for the cost function
 const double w_cte = 3000;
-const double w_epsi = 3000;
+const double w_epsi = 2500;
 const double w_v = 1;
 const double w_delta = 5;
 const double w_a = 5;
-const double w_Ddelta = 200;
+const double w_Ddelta = 1000;
 const double w_Da = 10;
 const double w_v_epsi = 1000;
 
