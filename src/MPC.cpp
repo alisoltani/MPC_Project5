@@ -38,8 +38,8 @@ size_t delta_start = epsi_start + N;
 size_t a_start = delta_start + N - 1;
 
 // Weights for the cost function
-const double w_cte = 3000;
-const double w_epsi = 2500;
+const double w_cte = 2000;
+const double w_epsi = 1500;
 const double w_v = 1;
 const double w_delta = 5;
 const double w_a = 5;
