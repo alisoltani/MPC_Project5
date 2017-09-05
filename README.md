@@ -1,8 +1,38 @@
-# CarND-Controls-MPC
-Self-Driving Car Engineer Nanodegree Program
+# Model Predictive Controller Project
+[video1]: data/mpc.mp4 "MPC @ 85mph"
+
+The goal of this project is to implement a model predictive controller to autonmously drive a simulated car around a track. This implementation is done in C++ and uses IPOPT and CPPAD libraries to calculate an optimal trajectories for the vehicle.
+
 
 ---
+ ## Vehicle model
+ The Vehicle Model used in this project is a simple kinematic bicycle model that ignores dynamical effects like friction, torque, and etc. The model structure used is shown in the equations below:
+ 
+![Alt text](data/modelstructure.JPG)
 
+px is the x-position of the vehicle, py is the y-position of the vehicle, psi is the orientation, and v velocity.
+
+The kinemetic model uses the vehicles current x and y positions, its orientation angle psi, velocit v, and calculated cross-track-error cte and psi error epsi. The accelaration a and steering angle delta are the actuator outputs of the model. For simplicity, the accelartion is assumed to be between [-1, 1], where negative values signify braking and positive values accelaration. The steering angle should fall between -25 and +25 degrees (or -0.436332 to 0.436332 radians). Lf is the measured distance between the front of the vehicle and center of gravity provided by Udacity. 
+
+##  Timestamps and frequency 
+In this project I started from the initial 10 timestamps with frequency of 0.1 second suggested in the Udacity course. After increasing these values to handle higher speeds it was noticed that the car behaved too conservativly on turns (especially the turn after the bridge where it would sometimes come to a stand stil) due to it trying too hard to find the best path. Using 5 timestamps I noticed that the vehicle was able to handle the track at low speeds, but not at hight speeds and would fall out of the track constantly. 
+
+The final settings used in this project was a 11 timestamps and frequency of 0.125. These values still resulted in conservative turns, but were able to handle the higher speeds of 85 mph.
+
+## Polynomial fitting of the waypoints
+The waypoints are preprocessed by transforming them to the vehicle's perspective (main.cpp lines 100-105). This greatly simplifies the fitting process as the vehicle x and y are set to the origin, and the orientation is zero.
+
+## Latency of 100ms
+In this project, it is assumed that there is a latency of 100ms between when the controller issues its command until when the actuators actually apply those commands. This means that the MPC designed has to take into account this latency, otherwise when approaching the corners and bends the controller would react to the wrong input. In order to combat this, the timestep was increased and a huge penalty was added to both using the steering actuator (delta) and an additional cost penalizing the combination of steering and velocity (that penalizes steering at high speeds) in line 79 of MPC.cpp helps overcome this latency.
+
+## Discussion
+The model predictive controller developed here is capable of handling up to 90 mph, with conservative turns. During tests it seems that increasing the timestamp would greatly effect the result, and having too many points to optimize normally resulted in oscillations and falling out of the track. Too few points meant that the vehicle was not able to react appropriatly and fast enough to turns and bends in the track. 
+
+Finally a video of the car around the track is shown here.
+[video][video1]
+
+
+--
 ## Dependencies
 
 * cmake >= 3.5
@@ -95,32 +125,3 @@ for instructions and the project rubric.
 
 * You don't have to follow this directory structure, but if you do, your work
   will span all of the .cpp files here. Keep an eye out for TODOs.
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
