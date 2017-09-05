@@ -8,7 +8,7 @@ The goal of this project is to implement a model predictive controller to autonm
  ## Vehicle model
  The Vehicle Model used in this project is a simple kinematic bicycle model that ignores dynamical effects like friction, torque, and etc. The model structure used is shown in the equations below:
  
-![Alt text](data/modelstructure.PNG)
+![Alt text](data/modelstruct.PNG)
 
 px is the x-position of the vehicle, py is the y-position of the vehicle, psi is the orientation, and v velocity.
 
