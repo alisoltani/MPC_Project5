@@ -3,7 +3,6 @@
 
 The goal of this project is to implement a model predictive controller to autonmously drive a simulated car around a track. This implementation is done in C++ and uses IPOPT and CPPAD libraries to calculate an optimal trajectories for the vehicle.
 
-
 ---
  ## Vehicle model
  The Vehicle Model used in this project is a simple kinematic bicycle model that ignores dynamical effects like friction, torque, and etc. The model structure used is shown in the equations below:
@@ -32,7 +31,9 @@ Finally a video of the car around the track is shown here.
 [video][video1]
 
 
---
+---
+---
+
 ## Dependencies
 
 * cmake >= 3.5
